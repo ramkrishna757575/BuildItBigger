@@ -1,15 +1,12 @@
 package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
-import com.ramkrishna.androidlibjoke.ActivityJoke;
-import com.ramkrishna.androidlibjoke.AppConstants;
 import com.ramkrishna.builditbigger.backend.myApi.MyApi;
 
 import java.io.IOException;
@@ -18,18 +15,15 @@ import java.io.IOException;
  * Created by ramkrishna on 27/12/16.
  */
 
-public class ApiJokeRequest extends AsyncTask<Void, Void, String> {
+class ApiJokeRequest extends AsyncTask<Void, Void, String> {
 
     private static MyApi myApiService = null;
     private Context mContext;
+    private IGetApiData delegate;
 
-    public ApiJokeRequest(Context context){
+    ApiJokeRequest(Context context, IGetApiData listener){
         mContext = context;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
+        delegate = listener;
     }
 
     @Override
@@ -55,10 +49,14 @@ public class ApiJokeRequest extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String joke) {
-        if(joke == null)
-            return;
-        Intent intent = new Intent(mContext, ActivityJoke.class);
-        intent.putExtra(AppConstants.JOKE_INTENT_EXTRA, joke);
-        mContext.startActivity(intent);
+        if(joke == null && !joke.isEmpty()){
+            delegate.getData(null);
+        }else{
+            delegate.getData(joke);
+        }
+    }
+
+    public interface IGetApiData{
+        void getData(String data);
     }
 }
