@@ -48,7 +48,9 @@ public class MainActivity extends AppCompatActivity implements ApiJokeRequest.IG
 
     @Override
     public void getData(String data) {
-        if(data == null || data.isEmpty())
+        if(data == null)
+            return;
+        if(data.isEmpty())
             return;
         Intent intent = new Intent(this, ActivityJoke.class);
         intent.putExtra(AppConstants.JOKE_INTENT_EXTRA, data);
