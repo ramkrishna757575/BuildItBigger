@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.ramkrishna.androidlibjoke.ActivityJoke;
 import com.ramkrishna.androidlibjoke.AppConstants;
@@ -13,10 +14,14 @@ import com.ramkrishna.androidlibjoke.AppConstants;
 
 public class MainActivity extends AppCompatActivity implements ApiJokeRequest.IGetApiData{
 
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressBar = (ProgressBar) findViewById(R.id.joke_loading_indicator);
+        progressBar.setVisibility(View.GONE);
     }
 
 
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements ApiJokeRequest.IG
     }
 
     public void tellJoke(View view) {
+        progressBar.setVisibility(View.VISIBLE);
         new ApiJokeRequest(this, this).execute();
     }
 
@@ -52,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements ApiJokeRequest.IG
             return;
         if(data.isEmpty())
             return;
+        progressBar.setVisibility(View.GONE);
         Intent intent = new Intent(this, ActivityJoke.class);
         intent.putExtra(AppConstants.JOKE_INTENT_EXTRA, data);
         startActivity(intent);
