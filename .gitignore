@@ -46,3 +46,6 @@ captures/
 
 #Remove idea folder
 .idea/
+
+#Remove backend/build
+backend/build/
