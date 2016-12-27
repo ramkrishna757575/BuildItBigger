@@ -5,9 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
-import com.ramkrishna.jokelib.JokeProvider;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,10 +39,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        JokeProvider jokeProvider = new JokeProvider();
-        jokeProvider.getJokes();
-        Toast.makeText(this, jokeProvider.getJokes(), Toast.LENGTH_LONG).show();
+        new ApiJokeRequest(this).execute();
     }
-
-
 }
